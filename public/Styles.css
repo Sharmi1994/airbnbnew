@@ -1,0 +1,288 @@
+h3{
+    font-size: 0.95rem;
+}
+
+.heading{
+    display:flex;
+ background-color: #dddddd;
+  
+    justify-content: center;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.topop{
+   text-decoration: underline;
+   margin-left: 2px;
+}
+
+.popup{
+    
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+       justify-content: center;
+    width: 800px;
+    height:500px;
+ 
+    
+}
+
+.img1{
+    position: absolute;
+    		    left: 0px;
+    		    right: 0px;
+    		    object-fit: cover;
+    		    object-position: center center;
+    		    vertical-align: bottom;
+    		    height: 100% !important;
+    	    width: 100% !important;
+}
+.img2{
+    width: 272px;
+    height: 23px;
+
+}
+
+.popup1{
+    position: relative !important;
+    flex: var(--mls-part-weight, 1) 0 0 !important;
+    max-width: var(--mls-part-max-width, none) !important;
+    min-height: var(--mls-part-min-height, auto) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0px, 1fr) !important;
+    grid-template-rows: minmax(0px, 1fr) !important;
+   
+}
+.img4{
+height:100px;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-around;
+}
+
+.crossicon{
+    width: 32px;
+    height: 30px;
+    
+}
+.popupcontent{
+
+    text-align: center;
+}
+
+.popupprice{
+    font-size: 3.25rem;
+    font-weight: bold;
+}
+.later{
+    text-decoration: underline;
+}
+
+.roundicon{
+   
+    border-radius: 50%;
+
+    background-color: white;
+}
+.search{
+        display: flex;
+		    justify-content: space-evenly;	
+		    border: 1px solid grey;
+		    width: 500px;
+	    height: 50px;
+        border-radius: 40px;
+        padding-top: 10px;
+      
+}
+.search2{
+    display: flex;
+        justify-content: space-evenly;	
+        border: 1px solid grey;
+        width: 850px;
+        height: 80px;
+    border-radius: 40px;
+    padding-top: 10px;
+  
+}
+
+.search-icon{
+    display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  color: white;
+}
+.search-icon2{
+    display: flex;
+  justify-content: left;
+  align-items: center;
+  border-radius: 40px;
+  width: 100px;
+  height:30px;
+  background-color: red;
+  color: white;
+}
+
+.login{
+    display: flex;
+    justify-content: space-evenly;
+    width: 300px;
+}
+
+hr{
+    margin:0px;
+}
+.box:hover{
+    background-color: #EEEEEE;
+    border-radius: 40px;
+
+}
+
+.userlogin{
+    border: 1px solid grey;
+    border-radius: 20px;
+    height: 30px;
+    width: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.details{
+    display:flex;
+    justify-content:space-around;
+    width:400px;
+    margin-left: 200px;
+}
+.inputdesign{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+
+.custom-calendar .p-inputtext {
+    height: 30px;
+    width:100px !important;
+}
+
+.mapimage{
+    width:100px;
+    height:100px;
+    border-radius: 10px;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.secrow{
+    margin-top:50px;
+}
+
+.guestcontain{
+    width:400px;
+    
+}
+.guestcontain1{
+    display: flex;
+    justify-content: space-between;
+    height:75px;
+}
+.guestcontain2{
+margin-top: 15px;
+padding-inline: 10px;
+}
+.age{
+    color:grey;
+    font-size: 0.75rem;
+}
+ .filterimg{
+    width: 24px;
+    height: 24px;
+ }
+.filtername{
+    font-size:0.75rem;
+}
+
+
+
+.filter-carousel {
+    overflow: hidden;
+    position: relative;
+
+  }
+
+  .filter-carousel .p-carousel-prev, .filter-carousel .p-carousel-next {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .filter-carousel .p-carousel-prev {
+    left: 0;
+  }
+
+  .filter-carousel .p-carousel-next {
+    right: 0;
+  }
+
+  .filterdiv{
+    height:80px; 
+    width:1200px ;
+     display:flex ;
+     margin-top:15px;
+     
+  }
+.mainFilter{
+    display:flex;
+    margin-top:15px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    width:90px;
+    height: 40px;
+    justify-content: space-around;
+    padding-top: 8px;
+}
+
+.dialog .p-dialog .p-dialog-title .p-dialog-header{
+    text-align: center !important;
+    font-style: normal;
+}
+
+.minmax{
+    display:flex;
+    justify-content: space-between;
+}
+.minmax1{
+    border:1px solid gray;
+    border-radius: 10px;
+    width:300px;
+    padding-left:10px
+}
+.PriceRange{
+    height:150px;
+    margin-top:20px;
+}
+.placesfilter{
+    display:grid;
+    grid-template-columns: 300px 300px;
+    height:250px;
+}
+.checkboxalign{
+    width:40px;
+}
+.filtertitle .p-dialog .p-dialog-content .p-component{
+    color:black !important;
+    font-size: 1.25rem;
+}
+
+.placedesc{
+    font-size: 0.75rem;
+}
