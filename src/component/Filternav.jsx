@@ -11,7 +11,7 @@ function FilterCarousel() {
     Filtervalue: item.value,
   }));
 
-  console.log(items);
+
 
   const Filtertemplate = (item) => {
     return (

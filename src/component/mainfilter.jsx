@@ -1,9 +1,26 @@
 import React, { useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { Dialog } from "primereact/dialog";
+import NoofRooms from "./count";
+import PropertyType from "./Propertytype";
+import Ammentities from "./ammentities";
+
 
 function MainFilter() {
+ 
   const [visible, setVisible] = useState(false);
+  const footerContent = (
+    <div className="footerspace">
+      <div>
+        <span style={{ textDecoration: "underline" }}>Clear All</span>
+      </div>
+      <div>
+        <button label="show no of days" className="btn-lg btn-dark">
+          Show No of Stays
+        </button>
+      </div>
+    </div>
+  );
   return (
     <React.Fragment>
       <div
@@ -21,8 +38,10 @@ function MainFilter() {
         visible={visible}
         style={{ width: "50vw" }}
         onHide={() => setVisible(false)}
+        footer={footerContent}
       >
         <hr />
+        {/* Price Range */}
         <div className="PriceRange">
           <h2>Price Range</h2>
           <span> The average nightly price is $298</span>
@@ -36,7 +55,7 @@ function MainFilter() {
                 autoComplete="off"
                 type="text"
                 aria-describedby=""
-                value="10"
+                placeholder="10"
               />
             </div>
             -
@@ -49,15 +68,15 @@ function MainFilter() {
                 autoComplete="off"
                 type="text"
                 aria-describedby=""
-                value="750+"
+                placeholder="750+"
               />
             </div>
           </div>
         </div>
         <hr />
-        <h2>Type of Places</h2>
+        {/* Types of place */}
+        <h2 className="filterheading">Type of Places</h2>
         <div className="placesfilter">
-      
           <div style={{ display: "flex" }}>
             <div>
               <input className="checkboxalign" type="checkbox" />
@@ -68,30 +87,62 @@ function MainFilter() {
             </div>
           </div>
 
-
           <div style={{ display: "flex" }}>
             <div>
-              <input  className="checkboxalign" type="checkbox" />
+              <input className="checkboxalign" type="checkbox" />
             </div>
             <div>
               <div classname="filtertitle">Private Room</div>
-              <div className="placedesc"> Your own room in a home or a hotel, plus some shared common spaces</div>
+              <div className="placedesc">
+                {" "}
+                Your own room in a home or a hotel, plus some shared common
+                spaces
+              </div>
             </div>
           </div>
-
 
           <div style={{ display: "flex" }}>
             <div>
-              <input  className="checkboxalign" type="checkbox" />
+              <input className="checkboxalign" type="checkbox" />
             </div>
             <div>
               <div classname="filtertitle">Shared Room</div>
-              <div className="placedesc">A sleeping space and common areas that may be shared with others</div>
+              <div className="placedesc">
+                A sleeping space and common areas that may be shared with others
+              </div>
             </div>
           </div>
-
         </div>
-        <hr/>
+        <hr />
+
+        {/* rooms and bed  */}
+        <div className="Rooms and bed">
+          <h2>Rooms and Bed</h2>
+          <div className="rooms">
+            <h3>Bedroom</h3> <NoofRooms />
+          </div>
+          <div className="rooms">
+            <h3>Bed</h3>
+            <NoofRooms />
+          </div>
+          <div className="rooms">
+            <h3>Bathroom</h3>
+            <NoofRooms />
+          </div>
+        </div>
+        <hr />
+
+        {/* property type */}
+        <div>
+          <h2> Property Type</h2> <PropertyType />
+        </div>
+        <hr />
+        {/* Ammentities */}
+        <div>
+          <h2>Ammentities</h2>
+          <h3>Essentials</h3>
+         <div><Ammentities/></div>
+        </div>
       </Dialog>
     </React.Fragment>
   );
