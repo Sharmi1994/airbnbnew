@@ -5,9 +5,21 @@ import NoofRooms from "./count";
 import PropertyType from "./Propertytype";
 import Ammentities from "./ammentities";
 import Bookingopt from "./BookingOpt";
-
+import axios from 'axios';
 function MainFilter() {
   const [visible, setVisible] = useState(false);
+ const [data,setData]=useState(null);
+
+  axios.get("http://localhost:8082")
+  .then(response=>{
+    setData(response.data);
+    console.log(response.data)
+  })
+  .catch(error=>{
+    console.log(error);})
+  
+
+  
   const footerContent = (
     <div className="footerspace">
       <div>
@@ -15,7 +27,7 @@ function MainFilter() {
       </div>
       <div>
         <button label="show no of days" className="btn-lg btn-dark">
-          Show No of Stays
+          Show {data} Stays
         </button>
       </div>
     </div>
