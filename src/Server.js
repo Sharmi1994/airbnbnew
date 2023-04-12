@@ -12,30 +12,41 @@ app.use(cors(corsOptions));
 const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
 
-app.get("/", function (req, res) {
-  res.send("Hello");
+app.get("/", async function (req, res) {
+
+  const noOfStays=  await findDocuments();
+  console.log(noOfStays);
+  res.status(200).send(noOfStays.toString());
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 async function findDocuments() {
-  const uri = process.env.MongoURI;
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  try{
+    const uri = process.env.MongoURI;
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  
+    //connected to mongoDB
+    client.connect();
+    console.log("Connected to mongodb");
+    const database = client.db("sample_airbnb");
+    const collection = database.collection("listingsAndReviews");
+    // In countdocuments {} species empty array which count all the obj in collection
+    const result = await collection.countDocuments({});
+  return result;
+  }
+  catch(err){
+    console.log(err);
+    return err;
 
-  //connected to mongoDB
-  client.connect();
-  console.log("Connected to mongodb");
-  const database = client.db("sample_airbnb");
-  const collection = database.collection("listingsAndReviews");
-  // In countdocuments {} species empty array which count all the obj in collection
-  const result = await collection.countDocuments({});
-  console.log(result);
+  }
+
 }
-findDocuments();
+
 
 app.listen(8082, function () {
   console.log("server up and running in 8082");

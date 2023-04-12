@@ -8,7 +8,7 @@ import Bookingopt from "./BookingOpt";
 import axios from 'axios';
 function MainFilter() {
   const [visible, setVisible] = useState(false);
- const [data,setData]=useState(null);
+ const [data,setData]=useState();
 
   axios.get("http://localhost:8082")
   .then(response=>{
