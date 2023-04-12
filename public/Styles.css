@@ -332,3 +332,51 @@ background-color: none;
     width: 100% !important;
     border-radius: 20px;
 }
+.amenty{
+display:grid;
+grid-template-columns: 300px 300px;
+}
+
+.sliding-button {
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    border-radius: 35px;
+    background-color: grey;
+    position: relative;
+    cursor: pointer;
+    
+  }
+  
+  .slider {
+    position: absolute;
+    top: 2.5px;
+    left: 2.5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .slider.checked {
+    transform: translateX(25px);
+  }
+
+  .tick-mark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+
+  .Bookopt{
+    display: flex;
+    justify-content: space-between;
+    margin:20px auto;
+  }
+  .bookoptdesc{
+    font-size: .75rem;
+    font-weight: lighter;
+  }

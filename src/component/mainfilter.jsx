@@ -4,10 +4,9 @@ import { Dialog } from "primereact/dialog";
 import NoofRooms from "./count";
 import PropertyType from "./Propertytype";
 import Ammentities from "./ammentities";
-
+import Bookingopt from "./BookingOpt";
 
 function MainFilter() {
- 
   const [visible, setVisible] = useState(false);
   const footerContent = (
     <div className="footerspace">
@@ -140,8 +139,14 @@ function MainFilter() {
         {/* Ammentities */}
         <div>
           <h2>Ammentities</h2>
-          <h3>Essentials</h3>
-         <div><Ammentities/></div>
+
+          <div>
+            <Ammentities />
+          </div>
+        </div>
+        <hr />
+        <div>
+          <Bookingopt/>
         </div>
       </Dialog>
     </React.Fragment>
