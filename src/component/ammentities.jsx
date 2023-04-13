@@ -32,7 +32,7 @@ function Ammentities() {
       <div className="amenty">
         {essentials.map((obj) => {
           return (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex"}}>
               <input className="checkboxalign" type="checkbox" />
               <span>{obj.value}</span>
             </div>

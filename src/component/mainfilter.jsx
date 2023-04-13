@@ -5,21 +5,25 @@ import NoofRooms from "./count";
 import PropertyType from "./Propertytype";
 import Ammentities from "./ammentities";
 import Bookingopt from "./BookingOpt";
-import axios from 'axios';
+import axios from "axios";
+import Accessible from "./accessible";
+import TopTier from "./toptier";
+
+import HostLangs from "./HostLangs";
 function MainFilter() {
   const [visible, setVisible] = useState(false);
- const [data,setData]=useState();
+  const [data, setData] = useState();
 
-  axios.get("http://localhost:8082")
-  .then(response=>{
-    setData(response.data);
-    console.log(response.data)
-  })
-  .catch(error=>{
-    console.log(error);})
-  
+  axios
+    .get("http://localhost:8082")
+    .then((response) => {
+      setData(response.data);
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
-  
   const footerContent = (
     <div className="footerspace">
       <div>
@@ -148,6 +152,7 @@ function MainFilter() {
           <h2> Property Type</h2> <PropertyType />
         </div>
         <hr />
+
         {/* Ammentities */}
         <div>
           <h2>Ammentities</h2>
@@ -157,8 +162,40 @@ function MainFilter() {
           </div>
         </div>
         <hr />
+
         <div>
-          <Bookingopt/>
+          <Bookingopt />
+        </div>
+        <hr />
+        {/* Accessibility feature */}
+
+        <div>
+          <h2>Accessibility Features</h2>
+          <h3 className="bookoptdesc">
+            This info was provided by the Host and reviewed by Airbnb
+          </h3>
+
+          <div>
+            <Accessible />
+          </div>
+        </div>
+        <hr/>
+
+
+        <div>
+          <h2>Top Tier Stay</h2>
+          <h3 className="bookoptdesc">
+            This info was provided by the Host and reviewed by Airbnb
+          </h3>
+
+          <div>
+            <TopTier />
+          </div>
+        </div>
+        <hr/>
+        {/* Host Lamguage */}
+        <div>
+          <HostLangs />
         </div>
       </Dialog>
     </React.Fragment>
