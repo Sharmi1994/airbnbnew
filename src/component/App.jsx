@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 
 import FilterCarousel from "./Filternav";
 import MainFilter from "./mainfilter";
-
+import StayImages from "./StayImages";
 
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
       </div>
 
       <hr />
-
+<StayImages/>
 
       <Footer />
     </div>

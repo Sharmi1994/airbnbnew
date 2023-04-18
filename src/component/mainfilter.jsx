@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { Dialog } from "primereact/dialog";
 import NoofRooms from "./count";
@@ -14,15 +14,18 @@ function MainFilter() {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState();
 
-  axios
+
+    axios
     .get("http://localhost:8082")
     .then((response) => {
-      setData(response.data);
-      console.log(response.data);
+      setData(response.data.noOfStays);
+   
     })
     .catch((error) => {
       console.log(error);
     });
+
+  
 
   const footerContent = (
     <div className="footerspace">
