@@ -1,6 +1,5 @@
 import React from "react";
 
-import Header from "./header";
 import Footer from "./footer";
 import Navbar from "./Navbar";
 
@@ -8,24 +7,24 @@ import FilterCarousel from "./Filternav";
 import MainFilter from "./mainfilter";
 import StayImages from "./StayImages";
 
-
 function App() {
   return (
     <div>
-      <Header />
-      <hr />
       <Navbar />
       <hr />
+     
       <div className="filterdiv">
-        <div className="col" style={{ display: "flex" }}>
+        <div className="col0" >
           <FilterCarousel />
         </div>{" "}
-        <div className="col"><MainFilter/></div>
+        <div className="col">
+          <MainFilter />
+        </div>
       </div>
-
-      <hr />
-<StayImages/>
-
+      <hr style={{marginTop:"100px"}}/>
+     
+ 
+      <StayImages />
       <Footer />
     </div>
   );

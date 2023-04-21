@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { Dialog } from "primereact/dialog";
 import NoofRooms from "./count";
@@ -14,18 +14,17 @@ function MainFilter() {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState();
 
-
+  useEffect(() => {
     axios
-    .get("http://localhost:8082")
-    .then((response) => {
-      setData(response.data.noOfStays);
-   
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  
+      .get("http://localhost:8082")
+      .then((response) => {
+        console.log("MainFilter");
+        setData(response.data.noOfStays);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const footerContent = (
     <div className="footerspace">
@@ -182,8 +181,7 @@ function MainFilter() {
             <Accessible />
           </div>
         </div>
-        <hr/>
-
+        <hr />
 
         <div>
           <h2>Top Tier Stay</h2>
@@ -195,7 +193,7 @@ function MainFilter() {
             <TopTier />
           </div>
         </div>
-        <hr/>
+        <hr />
         {/* Host Lamguage */}
         <div>
           <HostLangs />

@@ -5,7 +5,8 @@ h3{
 .heading{
     display:flex;
  background-color: #dddddd;
-  
+position: fixed;
+width:100%;
     justify-content: center;
     padding-top: 25px;
     padding-bottom: 25px;
@@ -36,10 +37,9 @@ h3{
     		    left: 0px;
     		    right: 0px;
     		    object-fit: cover;
-    		    object-position: center center;
-    		    vertical-align: bottom;
+    		  margin-left:20px;
     		    height: 100% !important;
-    	    width: 100% !important;
+    	    width: 80% !important;
 }
 .img2{
     width: 272px;
@@ -64,6 +64,12 @@ height:100px;
 .navbar{
     display: flex;
     justify-content: space-around;
+    position: fixed;
+    width: 100%;
+    top:0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
 }
 
 .crossicon{
@@ -236,10 +242,11 @@ padding-inline: 10px;
 
   .filterdiv{
     height:80px; 
-    width:1200px ;
+    width:100% ;
      display:flex ;
-     margin-top:15px;
-     
+     padding-top:15px;
+     position: fixed;
+     background-color: #fff;
   }
 .mainFilter{
     display:flex;
@@ -401,4 +408,45 @@ margin:20px auto;
 grid-template-columns: 300px 300px 300px 300px;
 justify-content: space-around;
     margin: 20px;
+  
   }
+  #pr_id_2_content.p-dialog-content {
+    display: flex;
+}
+body{        
+    margin-top: 100px;
+  margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 800px) {
+    .mainimgdirect{
+        display: grid;
+    grid-template-columns: 300px 300px 300px ;
+    justify-content: space-around;
+    }
+    .col0{
+        display: flex;
+        width:600px;
+    }
+}
+@media only screen and (max-width: 800px)  {
+    .mainimgdirect{
+        display: grid;
+    grid-template-columns: 300px 300px  ;
+    }
+    .col0{
+        display: flex;
+        width:400px;
+    }
+}
+
+.footer{
+    position:fixed;
+    background-color: #fff;
+    bottom:0;
+    width:100%;
+}
+.col0{
+    display: flex;
+    width:1200px;
+}

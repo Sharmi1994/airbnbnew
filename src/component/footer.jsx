@@ -5,7 +5,7 @@ import { FaCopyright } from "react-icons/fa";
 function Footer() {
   const year = new Date().getFullYear();
   return (
-    <div>
+    <div className="footer">
       <div>
         <FaCopyright />
         <h3>{year}</h3>

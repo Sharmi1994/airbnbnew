@@ -1,45 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 
 import axios from "axios";
 
 function StayImages() {
   const [value, setValue] = useState([]);
-  axios
-    .get("http://localhost:8082")
-    .then((response) => {
-      setValue(response.data.styimges);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8082")
+      .then((response) => {
+        console.log('StayImages')
+        setValue(response.data.styimges);
+
+        console.log(response.data.styimges);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
+  
     <div className="mainimgdirect">
-      {value.map((img, index) => {
+      { Array.isArray(value)&&
+      value.map((val, index) => {
         return (
-          <div className="imgdirect">
+          <div className="imgdirect" key={index}>
             <div>
               <img
                 className="stayimg"
-                key={index}
-                src={img.images.picture_url}
+                src={val.images.picture_url}
                 alt="stayimg.png"
               />
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div style={{fontSize:"0.75rem"}}>{img.address.street}</div>
+              <div style={{ fontSize: "0.75rem" }}>{val.address.street}</div>
               <div>
                 <FaStar />
-                Rating
+                {val.review_scores.review_scores_accuracy}
               </div>
             </div>
             <div>Date</div>
-            <div>Cost</div>
+            <div style={{ fontSize: "0.75rem" }}>{Math.ceil(val.stayDistance/1000)}<span>KM</span></div>
+            <div style={{ fontSize: "0.75rem" }}>{val.price.$numberDecimal}<span>USD</span></div>
           </div>
         );
       })}
     </div>
+  
   );
 }
 

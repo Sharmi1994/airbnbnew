@@ -32,18 +32,18 @@ function FilterCarousel() {
       numVisible={10}
       numScroll={5}
       showIndicators={false}
-    //   responsiveOptions={[
-    //     {
-    //       breakpoint: "1024px",
-    //       numVisible: 10,
-    //       numScroll: 5,
-    //     },
-    //     {
-    //       breakpoint: "768px",
-    //       numVisible: 10,
-    //       numScroll: 6,
-    //     },
-    //   ]}
+      // responsiveOptions={[
+      //   {
+      //     breakpoint: "1024px",
+      //     numVisible: 10,
+      //     numScroll: 5,
+      //   },
+      //   {
+      //     breakpoint: "768px",
+      //     numVisible: 5,
+      //     numScroll: 10,
+      //   },
+      // ]}
       className="filter-carousel"
       itemTemplate={Filtertemplate}
     />
