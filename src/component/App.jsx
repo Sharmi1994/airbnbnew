@@ -21,7 +21,7 @@ function App() {
           <MainFilter />
         </div>
       </div>
-      <hr style={{marginTop:"100px"}}/>
+      <hr />
      
  
       <StayImages />

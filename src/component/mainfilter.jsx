@@ -16,7 +16,7 @@ function MainFilter() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8082")
+      .get("http://localhost:8082/count")
       .then((response) => {
         console.log("MainFilter");
         setData(response.data.noOfStays);

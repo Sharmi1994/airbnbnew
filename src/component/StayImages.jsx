@@ -41,7 +41,7 @@ function StayImages() {
                 {val.review_scores.review_scores_accuracy}
               </div>
             </div>
-            <div>Date</div>
+      
             <div style={{ fontSize: "0.75rem" }}>{Math.ceil(val.stayDistance/1000)}<span>KM</span></div>
             <div style={{ fontSize: "0.75rem" }}>{val.price.$numberDecimal}<span>USD</span></div>
           </div>

@@ -25,13 +25,30 @@ console.log("Connected to mongodb");
 const database = client.db("sample_airbnb");
 const collection = database.collection("listingsAndReviews");
 
+//app.get for Stayimages
 app.get("/", async function (req, res) {
-  const noOfStays = await findDocuments();
+ 
 
   const styimges = await findimg();
-  console.log(styimges);
-  res.status(200).send({ noOfStays, styimges });
+
+  res.status(200).send( {styimges} );
 });
+//app.get for no of stays in main filter
+app.get("/count", async function (req, res) {
+  const noOfStays = await findDocuments();
+  res.status(200).send({noOfStays});
+});
+
+//post method
+
+app.post("/", function (req,res){
+  const {region,Checkin,Checkout,GuestDetail}= req.body;
+  console.log(req.body);
+  res.send("successfully sent");
+
+})
+
+
 
 // count the total stays available
 async function findDocuments() {
@@ -45,7 +62,7 @@ async function findDocuments() {
   }
 }
 
-//retrieving images and rating from DB
+//retrieving images and rating from DB and calculating distance
 
 async function findimg() {
   try {

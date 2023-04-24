@@ -241,11 +241,10 @@ padding-inline: 10px;
   }
 
   .filterdiv{
-    height:80px; 
+    margin-top: 50px;
     width:100% ;
      display:flex ;
      padding-top:15px;
-     position: fixed;
      background-color: #fff;
   }
 .mainFilter{
@@ -410,9 +409,9 @@ justify-content: space-around;
     margin: 20px;
   
   }
-  #pr_id_2_content.p-dialog-content {
+  /* #pr_id_2_content.p-dialog-content {
     display: flex;
-}
+} */
 body{        
     margin-top: 100px;
   margin-bottom: 60px;
@@ -428,12 +427,16 @@ body{
         display: flex;
         width:600px;
     }
+    .filterdiv{
+        margin-top: 150px;}
 }
 @media only screen and (max-width: 800px)  {
     .mainimgdirect{
         display: grid;
     grid-template-columns: 300px 300px  ;
     }
+    .filterdiv{
+        margin-top: 150px;}
     .col0{
         display: flex;
         width:400px;
@@ -449,4 +452,8 @@ body{
 .col0{
     display: flex;
     width:1200px;
+}
+.btn-lg{
+    height: 50px;
+    border-radius: 20px;
 }
