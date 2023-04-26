@@ -6,13 +6,13 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import axios from "axios";
+
 import moment from "moment";
 import { OverlayPanel } from "primereact/overlaypanel";
 import Map from "./map";
 
 import Addguest from "./addguest";
-function Detail() {
+function Detail(props) {
   const op = useRef(null);
   const ope = useRef(null);
   const [date1, setDate1] = useState(null);
@@ -39,25 +39,16 @@ function Detail() {
 
   //set region
   async function handleRegionChange(value) {
-    setselectregion(value);
-    setregion(false);
+      setselectregion(value);
+    // setregion(false);
+    op?.current?.toggle(value);
   }
 
 
   async function handleSubmit(e) {
     handleSearch();
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8082", {
-        region: selectregion,
-        Checkin: date1,
-        Checkout: date2,
-        GuestDetail: guestValue,
-      });
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
+  props.handleCallBack({selectregion,date1, date2, guestValue})
 
   }
 
@@ -86,7 +77,7 @@ function Detail() {
                 }}
                 onClick={(e) => {
                   e.preventDefault();
-                  op.current.toggle(e);
+                  op?.current?.toggle(e);
                 }}
               />
               {region && (

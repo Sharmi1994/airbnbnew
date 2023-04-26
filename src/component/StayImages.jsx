@@ -1,24 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 
-import axios from "axios";
 
-function StayImages() {
+
+function StayImages(props) {
   const [value, setValue] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8082")
-      .then((response) => {
-        console.log('StayImages')
-        setValue(response.data.styimges);
+  useEffect(()=>{
+    setValue(props.values);
+	}, [props.values])
 
-        console.log(response.data.styimges);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   return (
   

@@ -5,10 +5,15 @@ import Login from "./login";
 
 import Search from "./search";
 
-function Navbar() {
+function Navbar(props) {
   const [onclick, setOnclick] = useState(false);
   function handleClick() {
     setOnclick(true);
+  }
+
+  function navbarCallBack(data){
+    props.handleCallback(data);
+ 
   }
 
   return (
@@ -21,7 +26,7 @@ function Navbar() {
         ></img>
       </div>
 
-      {onclick ? <Detail/> :<Search />}
+      {onclick ? <Detail handleCallBack={navbarCallBack}/> :<Search />}
 
       <Login />
     </nav>

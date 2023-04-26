@@ -25,67 +25,86 @@ console.log("Connected to mongodb");
 const database = client.db("sample_airbnb");
 const collection = database.collection("listingsAndReviews");
 
-//app.get for Stayimages
 app.get("/", async function (req, res) {
- 
-
-  const styimges = await findimg();
-
-  res.status(200).send( {styimges} );
+  res.status(200).send("OK");
 });
+
+app.get("/getAllStay", async function (req, res) {
+  let resultend;
+  let response;
+  try {
+    resultend = await findimg();
+    response = {
+      status: "OK",
+      result: resultend,
+      error: null,
+    };
+  } catch (err) {
+    console.error(err);
+    response = {
+      status: "Error",
+      result: null,
+      error: err,
+    };
+    res.status(400).send(response);
+  }
+
+  res.status(200).send(response);
+});
+
+app.post("/getStayByFilter", async function (req, res) {
+  let resultend;
+  resultend = await filterStays(req.body.region);
+  const response = {
+    status: "OK",
+    result: resultend,
+    error: null,
+  };
+  res.status(200).send(response );
+});
+
 //app.get for no of stays in main filter
 app.get("/count", async function (req, res) {
   const noOfStays = await findDocuments();
-  res.status(200).send({noOfStays});
+  res.status(200).send({ noOfStays });
 });
 
 //post method
 
-app.post("/", function (req,res){
-  const {region,Checkin,Checkout,GuestDetail}= req.body;
-  console.log(req.body);
-  res.send("successfully sent");
+app.get("/", async function (req, res) {
+  // const { region, Checkin, Checkout, GuestDetail } = req.body;
 
-})
+  const regionName = req.body.region;
+  const result = filterStays(regionName);
+  res.send(result);
+});
 
+//function to filter location
+async function filterStays(region) {
 
-
-// count the total stays available
-async function findDocuments() {
-  try {
-    // In countdocuments {} species empty array which count all the obj in collection
-    const result = await collection.countDocuments({});
-    return result;
-  } catch (err) {
-    console.log(err);
-    return err;
+  const match = {
+    "images.picture_url": { $exists: true },
+    "address.street": { $exists: true },
+    "review_scores.review_scores_accuracy": { $exists: true },
+    price: { $exists: true },
   }
-}
-
-//retrieving images and rating from DB and calculating distance
-
-async function findimg() {
+  if(region){
+    match["address.country"] = region
+  }
   try {
-    const styimg = await collection
+    const filteredloc = await collection
       .aggregate([
-        
-          {
-            $geoNear: {
-              near: { type: "Point", coordinates: [-81.254601, 19.313299] },
-              distanceField: "stayDistance",
-              maxDistance: 1500000000,
-              spherical: true,
-            },
-          },
-          {
-          $match: {
-            "images.picture_url": { $exists: true },
-            "address.street": { $exists: true },
-            "review_scores.review_scores_accuracy": { $exists: true },
-            price: { $exists: true },
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [-81.254601, 19.313299] },
+            distanceField: "stayDistance",
+            maxDistance: 1500000000,
+            spherical: true,
           },
         },
-   
+        {
+          $match: match,
+        },
 
         {
           $project: {
@@ -110,9 +129,75 @@ async function findimg() {
         { $limit: 300 },
       ])
       .toArray();
-    return styimg;
+    // console.log(filteredloc)
+    return filteredloc;
   } catch (Err) {
     console.log(Err);
+    return Err;
+  }
+}
+
+// count the total stays available
+async function findDocuments() {
+  try {
+    // In countdocuments {} species empty array which count all the obj in collection
+    const result = await collection.countDocuments({});
+    return result;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+//retrieving images and rating from DB and calculating distance
+
+async function findimg() {
+  try {
+    const styimg = await collection
+      .aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [-81.254601, 19.313299] },
+            distanceField: "stayDistance",
+            maxDistance: 1500000000,
+            spherical: true,
+          },
+        },
+        {
+          $match: {
+            "images.picture_url": { $exists: true },
+            "address.street": { $exists: true },
+            "review_scores.review_scores_accuracy": { $exists: true },
+            price: { $exists: true },
+          },
+        },
+
+        {
+          $project: {
+            "images.picture_url": 1,
+            "address.street": 1,
+            "review_scores.review_scores_accuracy": 1,
+            price: 1,
+            stayDistance: 1,
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            "images.picture_url": -1,
+            "address.street": -1,
+            "review_scores.review_scores_accuracy": -1,
+            price: -1,
+            stayDistance: 1,
+          },
+        },
+        { $skip: 20 },
+        { $limit: 300 },
+      ])
+      .toArray();
+
+    return styimg;
+  } catch (Err) {
     return Err;
   }
 }

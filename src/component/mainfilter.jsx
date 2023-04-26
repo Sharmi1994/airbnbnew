@@ -10,21 +10,14 @@ import Accessible from "./accessible";
 import TopTier from "./toptier";
 
 import HostLangs from "./HostLangs";
-function MainFilter() {
+function MainFilter(props) {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8082/count")
-      .then((response) => {
-        console.log("MainFilter");
-        setData(response.data.noOfStays);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  useEffect(()=>{
+    setData(props.Datas);
+  },[props.Datas])
+
 
   const footerContent = (
     <div className="footerspace">
