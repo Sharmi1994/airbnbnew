@@ -5,7 +5,7 @@ import NoofRooms from "./count";
 import PropertyType from "./Propertytype";
 import Ammentities from "./ammentities";
 import Bookingopt from "./BookingOpt";
-import axios from "axios";
+
 import Accessible from "./accessible";
 import TopTier from "./toptier";
 
@@ -14,9 +14,17 @@ function MainFilter(props) {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState();
 
+  const[minPrice, setMinPrice]= useState("");
+  const[maxPrice, setMaxPrice]=useState("");
+
+  // total no of stays
   useEffect(()=>{
     setData(props.Datas);
   },[props.Datas])
+
+  function handleStayDetails(){
+    props.handleCallback({minPrice, maxPrice});
+  }
 
 
   const footerContent = (
@@ -25,7 +33,7 @@ function MainFilter(props) {
         <span style={{ textDecoration: "underline" }}>Clear All</span>
       </div>
       <div>
-        <button label="show no of days" className="btn-lg btn-dark">
+        <button type="submit" onClick={handleStayDetails} label="show no of days" className="btn-lg btn-dark">
           Show {data} Stays
         </button>
       </div>
@@ -66,6 +74,10 @@ function MainFilter(props) {
                 type="text"
                 aria-describedby=""
                 placeholder="10"
+                onChange={function (event){
+                  setMinPrice(event.target.value);
+                  console.log(minPrice);
+                }}
               />
             </div>
             -
@@ -79,6 +91,10 @@ function MainFilter(props) {
                 type="text"
                 aria-describedby=""
                 placeholder="750+"
+                onChange={function (event){
+                  setMaxPrice(event.target.value);
+            console.log(maxPrice);
+                }}
               />
             </div>
           </div>

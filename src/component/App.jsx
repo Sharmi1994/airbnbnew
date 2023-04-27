@@ -54,13 +54,27 @@ async function applyFilter(data){
     });
 
     if(response.data.status === 'OK'){
-      setValue(response.data.result)
+      setValue(response.data.result);
+      setDatum(response.data.count);
     }
     
   } catch (err) {
     console.log(err);
   }
 }
+//PriceFilter
+async function priceFilter(price){
+try{
+const response= await axios.post("http://localhost:8082/pricefilter",{
+  minPrice:price.minPrice,
+  maxPrice:price.maxPrice
+});
+}
+catch(err){
+console.log(err);
+}
+}
+
 
 
   return (
@@ -73,7 +87,7 @@ async function applyFilter(data){
           <FilterCarousel />
         </div>{" "}
         <div className="col">
-          <MainFilter Datas={Datum}/>
+          <MainFilter Datas={Datum} handleCallback={priceFilter}/>
         </div>
       </div>
       <hr />

@@ -6,7 +6,6 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-
 import moment from "moment";
 import { OverlayPanel } from "primereact/overlaypanel";
 import Map from "./map";
@@ -18,8 +17,9 @@ function Detail(props) {
   const [date1, setDate1] = useState(null);
   const [date2, setDate2] = useState(null);
   const [guestValue, setGuestValue] = useState("");
-  const [region, setregion] = useState(true);
+ 
   const [selectregion, setselectregion] = useState("");
+  const currentDate = moment();
 
   //add the guest count
   function handleGuest(value) {
@@ -28,28 +28,20 @@ function Detail(props) {
     );
   }
 
-  //check the date check in and check out
-  function handleSearch() {
-    if (moment(date2).isBefore(date1)) {
-      alert("checkout date cannot be before checkin date");
-    } else {
-      alert("search successful");
-    }
-  }
-
   //set region
   async function handleRegionChange(value) {
-      setselectregion(value);
-    // setregion(false);
+    setselectregion(value);
+    
     op?.current?.toggle(value);
   }
-
-
   async function handleSubmit(e) {
-    handleSearch();
     e.preventDefault();
-  props.handleCallBack({selectregion,date1, date2, guestValue})
-
+    //check whether the check in and checkout date is correct
+     if (moment(date2).isBefore(date1)) {
+      alert("checkout date cannot be before checkin date");
+    } else {
+      props.handleCallBack({ selectregion, date1, date2, guestValue });
+    }
   }
 
   return (
@@ -80,11 +72,11 @@ function Detail(props) {
                   op?.current?.toggle(e);
                 }}
               />
-              {region && (
+             
                 <OverlayPanel ref={op}>
                   <Map onRegionChange={handleRegionChange} />
                 </OverlayPanel>
-              )}
+           
             </div>
           </div>
 
@@ -95,6 +87,7 @@ function Detail(props) {
                 value={date1}
                 className="custom-calendar"
                 placeholder="Add Dates"
+                minDate={currentDate.toDate()}
                 onChange={(e) => setDate1(e.value)}
               />
             </div>
@@ -107,6 +100,7 @@ function Detail(props) {
                 value={date2}
                 className="custom-calendar"
                 placeholder="Add Dates"
+                minDate={currentDate.toDate()}
                 onChange={(e) => setDate2(e.value)}
               />
             </div>
@@ -128,19 +122,10 @@ function Detail(props) {
             </OverlayPanel>
           </div>
 
-          <button
-            className="btn-lg btn-danger"
-            onClick={handleSearch}
-            type="submit"
-          >
+          <button className="btn-lg btn-danger" type="submit">
             {" "}
             Search <FaSearch />
           </button>
-
-          {/* <div className="search-icon2" onClick={handleSearch}>
-          Search
-          <FaSearch />
-        </div> */}
         </div>
       </form>
     </div>

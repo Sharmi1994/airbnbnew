@@ -52,17 +52,6 @@ app.get("/getAllStay", async function (req, res) {
   res.status(200).send(response);
 });
 
-app.post("/getStayByFilter", async function (req, res) {
-  let resultend;
-  resultend = await filterStays(req.body.region);
-  const response = {
-    status: "OK",
-    result: resultend,
-    error: null,
-  };
-  res.status(200).send(response );
-});
-
 //app.get for no of stays in main filter
 app.get("/count", async function (req, res) {
   const noOfStays = await findDocuments();
@@ -79,17 +68,36 @@ app.get("/", async function (req, res) {
   res.send(result);
 });
 
+//app.post getstaybyfilter
+app.post("/getStayByFilter", async function (req, res) {
+
+ let  resultend = await filterStays(req.body.region);
+
+  const response = {
+    status: "OK",
+    result: resultend.filteredloc,
+   count:resultend.countstay,
+    error: null,
+  };
+  res.status(200).send(response);
+});
+
+//app.post  pricefilter
+
+app.post("/pricefilter", async function (req, res) {
+  console.log(req.body);
+});
+
 //function to filter location
 async function filterStays(region) {
-
   const match = {
     "images.picture_url": { $exists: true },
     "address.street": { $exists: true },
     "review_scores.review_scores_accuracy": { $exists: true },
     price: { $exists: true },
-  }
-  if(region){
-    match["address.country"] = region
+  };
+  if (region) {
+    match["address.country"] = region;
   }
   try {
     const filteredloc = await collection
@@ -126,11 +134,12 @@ async function filterStays(region) {
           },
         },
         { $skip: 20 },
-        { $limit: 300 },
+        { $limit: 500 },
       ])
       .toArray();
-    // console.log(filteredloc)
-    return filteredloc;
+    const countstay = await collection.countDocuments(match);
+  //  console.log(countstay);
+    return {countstay, filteredloc};
   } catch (Err) {
     console.log(Err);
     return Err;
@@ -192,7 +201,7 @@ async function findimg() {
           },
         },
         { $skip: 20 },
-        { $limit: 300 },
+        { $limit: 500 },
       ])
       .toArray();
 
