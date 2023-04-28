@@ -70,13 +70,12 @@ app.get("/", async function (req, res) {
 
 //app.post getstaybyfilter
 app.post("/getStayByFilter", async function (req, res) {
-
- let  resultend = await filterStays(req.body.region);
+  let resultend = await filterStays(req.body.region);
 
   const response = {
     status: "OK",
     result: resultend.filteredloc,
-   count:resultend.countstay,
+    count: resultend.countstay,
     error: null,
   };
   res.status(200).send(response);
@@ -85,8 +84,85 @@ app.post("/getStayByFilter", async function (req, res) {
 //app.post  pricefilter
 
 app.post("/pricefilter", async function (req, res) {
-  console.log(req.body);
+  try {
+    console.log(req.body);
+    let filters = await priceFilters(req.body);
+    const response = {
+      status: "OK",
+      result2: filters.filterPriceloc,
+      count2: filters.count,
+      error: null,
+    };
+
+    res.status(200).send(response);
+  } catch (err) {
+    const response = {
+      status: "NOT OK",
+      result: null,
+      error: err,
+    };
+    res.status(400).send(response);
+  }
 });
+
+async function priceFilters(filters) {
+  try {
+    const filterPriceloc = await collection
+      .aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [-81.254601, 19.313299] },
+            distanceField: "stayDistance",
+            maxDistance: 1500000000,
+            spherical: true,
+          },
+        },
+        {
+          $match: {
+            "images.picture_url": { $exists: true },
+            "address.street": { $exists: true },
+            "review_scores.review_scores_accuracy": { $exists: true },
+            price: { $gt: parseInt(filters.minPrice), $lt: parseInt(filters.maxPrice) },
+            "address.country": filters.region,
+          },
+        },
+
+        {
+          $project: {
+            "images.picture_url": 1,
+            "address.street": 1,
+            "review_scores.review_scores_accuracy": 1,
+            price: 1,
+            stayDistance: 1,
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            "images.picture_url": -1,
+            "address.street": -1,
+            "review_scores.review_scores_accuracy": -1,
+            price: -1,
+            stayDistance: 1,
+          },
+        },
+        { $skip: 20 },
+        { $limit: 500 },
+      ])
+      .toArray();
+    //count doucmnet need the match components to count the data, if you pass filterpriceloc it will throw error.
+    const count = await collection.countDocuments({
+      "images.picture_url": { $exists: true },
+      "address.street": { $exists: true },
+      "review_scores.review_scores_accuracy": { $exists: true },
+      price: { $gt: parseInt(filters.minPrice), $lt: parseInt(filters.maxPrice) },
+      "address.country": filters.region,
+    });
+    return { count, filterPriceloc };
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 //function to filter location
 async function filterStays(region) {
@@ -96,6 +172,7 @@ async function filterStays(region) {
     "review_scores.review_scores_accuracy": { $exists: true },
     price: { $exists: true },
   };
+  //verify if region exists then it will match the address field else it will be ignored
   if (region) {
     match["address.country"] = region;
   }
@@ -138,8 +215,8 @@ async function filterStays(region) {
       ])
       .toArray();
     const countstay = await collection.countDocuments(match);
-  //  console.log(countstay);
-    return {countstay, filteredloc};
+    //  console.log(countstay);
+    return { countstay, filteredloc };
   } catch (Err) {
     console.log(Err);
     return Err;

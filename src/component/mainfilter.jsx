@@ -9,23 +9,24 @@ import Bookingopt from "./BookingOpt";
 import Accessible from "./accessible";
 import TopTier from "./toptier";
 
+import roomType from "../roomtype";
+
 import HostLangs from "./HostLangs";
 function MainFilter(props) {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState();
 
-  const[minPrice, setMinPrice]= useState("");
-  const[maxPrice, setMaxPrice]=useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   // total no of stays
-  useEffect(()=>{
+  useEffect(() => {
     setData(props.Datas);
-  },[props.Datas])
+  }, [props.Datas]);
 
-  function handleStayDetails(){
-    props.handleCallback({minPrice, maxPrice});
+  function handleStayDetails() {
+    props.handleCallback({ minPrice, maxPrice });
   }
-
 
   const footerContent = (
     <div className="footerspace">
@@ -33,7 +34,12 @@ function MainFilter(props) {
         <span style={{ textDecoration: "underline" }}>Clear All</span>
       </div>
       <div>
-        <button type="submit" onClick={handleStayDetails} label="show no of days" className="btn-lg btn-dark">
+        <button
+          type="submit"
+          onClick={handleStayDetails}
+          label="show no of days"
+          className="btn-lg btn-dark"
+        >
           Show {data} Stays
         </button>
       </div>
@@ -74,7 +80,7 @@ function MainFilter(props) {
                 type="text"
                 aria-describedby=""
                 placeholder="10"
-                onChange={function (event){
+                onChange={function (event) {
                   setMinPrice(event.target.value);
                   console.log(minPrice);
                 }}
@@ -91,9 +97,9 @@ function MainFilter(props) {
                 type="text"
                 aria-describedby=""
                 placeholder="750+"
-                onChange={function (event){
+                onChange={function (event) {
                   setMaxPrice(event.target.value);
-            console.log(maxPrice);
+                  console.log(maxPrice);
                 }}
               />
             </div>
@@ -103,41 +109,19 @@ function MainFilter(props) {
         {/* Types of place */}
         <h2 className="filterheading">Type of Places</h2>
         <div className="placesfilter">
-          <div style={{ display: "flex" }}>
-            <div>
-              <input className="checkboxalign" type="checkbox" />
-            </div>
-            <div>
-              <div classname="filtertitle">Entire Place</div>
-              <div className="placedesc"> A place all to yourself</div>
-            </div>
-          </div>
 
-          <div style={{ display: "flex" }}>
+        {roomType.map((obj)=>{
+          return (<div style={{ display: "flex" }}>
             <div>
               <input className="checkboxalign" type="checkbox" />
             </div>
             <div>
-              <div classname="filtertitle">Private Room</div>
-              <div className="placedesc">
-                {" "}
-                Your own room in a home or a hotel, plus some shared common
-                spaces
-              </div>
+              <div classname="filtertitle"><h3>{obj.value}</h3></div>
+              <div className="placedesc"> {obj.Desc}</div>
             </div>
-          </div>
-
-          <div style={{ display: "flex" }}>
-            <div>
-              <input className="checkboxalign" type="checkbox" />
-            </div>
-            <div>
-              <div classname="filtertitle">Shared Room</div>
-              <div className="placedesc">
-                A sleeping space and common areas that may be shared with others
-              </div>
-            </div>
-          </div>
+          </div>)
+        })}
+          
         </div>
         <hr />
 
