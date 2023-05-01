@@ -15,20 +15,6 @@ function App() {
 
   const [currentFilter, setCurrentFilter] = useState({});
 
-  //API call to count the total no of Stays
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8082/count")
-      .then((response) => {
-        console.log("MainFilter");
-        setDatum(response.data.noOfStays);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   useEffect(() => {
     console.log(currentFilter);
   }, [currentFilter]);
@@ -38,15 +24,27 @@ function App() {
     axios
       .get("http://localhost:8082/getAllStay")
       .then((response) => {
-        console.log("StayImages", response);
+        console.log("StayImages");
         if (response.data.status === "OK") {
           setValue(response.data.result);
+          // setDatum(response.data.result.length);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  //API call for total count
+  useEffect(()=>{
+    axios
+    .get("http://localhost:8082/count")
+    .then((response)=>{
+      if(response.data.status==="OK"){
+        setDatum(response.data.result);
+      }
+    })
+  })
 
   // Api call for filtering DB
   async function applyFilter(data) {
@@ -65,24 +63,27 @@ function App() {
 
       if (response.data.status === "OK") {
         setValue(response.data.result);
-        setDatum(response.data.count);
+        // setDatum(response.data.result.length);
+
+        console.log(Value);
       }
     } catch (err) {
       console.log(err);
     }
   }
   //PriceFilter
-  async function priceFilter(price) {
+  async function priceFilter(data) {
     try {
-
+     
       const response = await axios.post("http://localhost:8082/pricefilter", {
-        minPrice:price.minPrice,
-        maxPrice: price.maxPrice,
+        minPrice: data.minPrice,
+        maxPrice: data.maxPrice,
         region: currentFilter.selectregion,
+        roomtype: data.roomtypes,
       });
       if (response.data.status === "OK") {
         setValue(response.data.result2);
-        setDatum(response.data.count2);
+        setDatum(response.data.result2.length);
       }
     } catch (err) {
       console.log(err);

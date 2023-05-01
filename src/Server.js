@@ -29,11 +29,32 @@ app.get("/", async function (req, res) {
   res.status(200).send("OK");
 });
 
+//totalcount
+app.get("/count", async function (req, res) {
+  let response;
+  try {
+    const totalcount = await collection.countDocuments();
+   response={
+    status:"OK",
+    result:totalcount,
+    error:null
+   }
+  } catch (err) {
+   response={
+    status:"NOT OK",
+    result:null,
+    error:err
+   }
+  }
+  res.send(response)
+});
+
 app.get("/getAllStay", async function (req, res) {
   let resultend;
   let response;
+
   try {
-    resultend = await findimg();
+    resultend = await findimg(req.query.pageNo || 0);
     response = {
       status: "OK",
       result: resultend,
@@ -52,45 +73,51 @@ app.get("/getAllStay", async function (req, res) {
   res.status(200).send(response);
 });
 
-//app.get for no of stays in main filter
-app.get("/count", async function (req, res) {
-  const noOfStays = await findDocuments();
-  res.status(200).send({ noOfStays });
-});
-
 //post method
 
-app.get("/", async function (req, res) {
-  // const { region, Checkin, Checkout, GuestDetail } = req.body;
+// app.get("/", async function (req, res) {
+//   // const { region, Checkin, Checkout, GuestDetail } = req.body;
 
-  const regionName = req.body.region;
-  const result = filterStays(regionName);
-  res.send(result);
-});
+//   const regionName = req.body.region;
+//   const result = filterStays(regionName);
+//   res.send(result);
+// });
 
 //app.post getstaybyfilter
 app.post("/getStayByFilter", async function (req, res) {
-  let resultend = await filterStays(req.body.region);
+let response;
+  try{
+    let resultend = await filterStays(req.body.region);
 
-  const response = {
-    status: "OK",
-    result: resultend.filteredloc,
-    count: resultend.countstay,
-    error: null,
-  };
-  res.status(200).send(response);
+     response = {
+      status: "OK",
+      result: resultend,
+      error: null,
+    };
+   
+    res.status(200).send(response);
+  }
+  catch(err){
+     response = {
+      status: "NOT OK",
+      result: null,
+      error: err,
+    };
+    res.status(400).send(response);
+  }
+
+
 });
 
 //app.post  pricefilter
 
 app.post("/pricefilter", async function (req, res) {
   try {
-    console.log(req.body);
+  
     let filters = await priceFilters(req.body);
     const response = {
       status: "OK",
       result2: filters.filterPriceloc,
-      count2: filters.count,
       error: null,
     };
 
@@ -106,6 +133,29 @@ app.post("/pricefilter", async function (req, res) {
 });
 
 async function priceFilters(filters) {
+  console.log(filters);
+  const match = {
+    "images.picture_url": { $exists: true },
+    "address.street": { $exists: true },
+    "review_scores.review_scores_accuracy": { $exists: true },
+  };
+  if (filters.region) {
+    match["address.country"] = filters.region;
+  }
+  if (filters.minPrice) {
+    match["price"] = {
+      $gt: parseInt(filters.minPrice),
+    };
+  }
+  if (filters.maxPrice) {
+    match["price"] = {
+      $lt: parseInt(filters.maxPrice),
+    };
+  }
+  if (filters.roomtype) {
+    match["room_type"] = { $in: [...filters.roomtype] };
+  }
+
   try {
     const filterPriceloc = await collection
       .aggregate([
@@ -118,13 +168,7 @@ async function priceFilters(filters) {
           },
         },
         {
-          $match: {
-            "images.picture_url": { $exists: true },
-            "address.street": { $exists: true },
-            "review_scores.review_scores_accuracy": { $exists: true },
-            price: { $gt: parseInt(filters.minPrice), $lt: parseInt(filters.maxPrice) },
-            "address.country": filters.region,
-          },
+          $match: match,
         },
 
         {
@@ -135,6 +179,7 @@ async function priceFilters(filters) {
             price: 1,
             stayDistance: 1,
             _id: 0,
+            room_type: 1,
           },
         },
         {
@@ -143,22 +188,17 @@ async function priceFilters(filters) {
             "address.street": -1,
             "review_scores.review_scores_accuracy": -1,
             price: -1,
-            stayDistance: 1,
+            stayDistance: -1,
+            room_type: -1,
           },
         },
-        { $skip: 20 },
+        { $skip: 0 },
         { $limit: 500 },
       ])
       .toArray();
-    //count doucmnet need the match components to count the data, if you pass filterpriceloc it will throw error.
-    const count = await collection.countDocuments({
-      "images.picture_url": { $exists: true },
-      "address.street": { $exists: true },
-      "review_scores.review_scores_accuracy": { $exists: true },
-      price: { $gt: parseInt(filters.minPrice), $lt: parseInt(filters.maxPrice) },
-      "address.country": filters.region,
-    });
-    return { count, filterPriceloc };
+    // //count doucmnet need the match components to count the data, if you pass filterpriceloc it will throw error.
+    // const count = await collection.countDocuments(match);
+    return filterPriceloc;
   } catch (err) {
     console.log(err);
   }
@@ -214,30 +254,17 @@ async function filterStays(region) {
         { $limit: 500 },
       ])
       .toArray();
-    const countstay = await collection.countDocuments(match);
-    //  console.log(countstay);
-    return { countstay, filteredloc };
+
+    return filteredloc;
   } catch (Err) {
     console.log(Err);
     return Err;
   }
 }
 
-// count the total stays available
-async function findDocuments() {
-  try {
-    // In countdocuments {} species empty array which count all the obj in collection
-    const result = await collection.countDocuments({});
-    return result;
-  } catch (err) {
-    console.log(err);
-    return err;
-  }
-}
-
 //retrieving images and rating from DB and calculating distance
 
-async function findimg() {
+async function findimg(pageNo) {
   try {
     const styimg = await collection
       .aggregate([
@@ -277,8 +304,8 @@ async function findimg() {
             stayDistance: 1,
           },
         },
-        { $skip: 20 },
-        { $limit: 500 },
+        { $skip: 20 }, //
+        { $limit: 500 }, // page size
       ])
       .toArray();
 

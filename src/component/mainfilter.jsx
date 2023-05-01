@@ -19,13 +19,25 @@ function MainFilter(props) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
+  const [roomtypes, setRoomTypes] = useState([]);
+
+
+  // state varibale 
+  
+
+  function handleroomClick(type,value){
+   console.log(type,value);
+
+   // if 
+  }
+
   // total no of stays
   useEffect(() => {
     setData(props.Datas);
   }, [props.Datas]);
 
   function handleStayDetails() {
-    props.handleCallback({ minPrice, maxPrice });
+    props.handleCallback({ minPrice, maxPrice, roomtypes });
   }
 
   const footerContent = (
@@ -109,19 +121,30 @@ function MainFilter(props) {
         {/* Types of place */}
         <h2 className="filterheading">Type of Places</h2>
         <div className="placesfilter">
-
-        {roomType.map((obj)=>{
-          return (<div style={{ display: "flex" }}>
-            <div>
-              <input className="checkboxalign" type="checkbox" />
-            </div>
-            <div>
-              <div classname="filtertitle"><h3>{obj.value}</h3></div>
-              <div className="placedesc"> {obj.Desc}</div>
-            </div>
-          </div>)
-        })}
-          
+          {roomType.map((obj) => {
+            return (
+              <div style={{ display: "flex" }}>
+                <div>
+                  <input
+                    className="checkboxalign"
+                    type="checkbox"
+                    onClick={(event) => {
+                      const ischecked = event.target.checked;
+                      if (ischecked) {
+                        setRoomTypes([...roomType,obj.value]);
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <div classname="filtertitle">
+                    <h3>{obj.Heading}</h3>
+                  </div>
+                  <div className="placedesc"> {obj.Desc}</div>
+                </div>
+              </div>
+            );
+          })}
         </div>
         <hr />
 
@@ -129,15 +152,15 @@ function MainFilter(props) {
         <div className="Rooms and bed">
           <h2>Rooms and Bed</h2>
           <div className="rooms">
-            <h3>Bedroom</h3> <NoofRooms />
+            <h3>Bedroom</h3> <NoofRooms type="bedroom" handleroomClick={handleroomClick} />
           </div>
           <div className="rooms">
             <h3>Bed</h3>
-            <NoofRooms />
+            <NoofRooms type="bed" handleroomClick={handleroomClick}   />
           </div>
           <div className="rooms">
             <h3>Bathroom</h3>
-            <NoofRooms />
+            <NoofRooms  type="bathroom" handleroomClick={handleroomClick} />
           </div>
         </div>
         <hr />

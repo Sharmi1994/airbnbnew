@@ -1,60 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-function NoofRooms() {
+import options from "../buttons";
+
+function NoofRooms(props) {
+
+  const [option, setOption]=useState([]);
+  function handleRoomClick(value) {
+   const newOptions =  options.map(x=>{
+      x.selected = false
+      if(x.value === value){
+        x.selected = true
+      }
+      return x
+    })
+    setOption(newOptions);
+    console.log(newOptions);
+    props.handleroomClick(props.type, value);
+  }
+
   return (
-    <div style={{display:"flex", justifyContent:"space-between"}}>
-      <div > 
-        <button type="button" className="btn-dark buttondesign">
-          <span aria-label="Any">Any</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button " className="buttondesign">
-          <span aria-label="1">1</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="2">2</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="3">3</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="4">4</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="5">5</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="6">6</span>
-        </button>
-      </div>
-
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="7">7</span>
-        </button>
-      </div>
-      <div>
-        <button type="button" className="buttondesign">
-          <span aria-label="8+">8+</span>
-        </button>
-      </div>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      {options.map((obj) => {
+        return (
+          <div>
+            <button
+              type="button"
+              onClick={() => handleRoomClick(obj.value)}
+              className={"buttondesign "+ (obj.selected? 'btn-dark':'')}
+            >
+              <span aria-label="Any">{obj.btnValue}</span>
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
