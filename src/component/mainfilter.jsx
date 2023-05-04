@@ -20,15 +20,45 @@ function MainFilter(props) {
   const [maxPrice, setMaxPrice] = useState("");
 
   const [roomtypes, setRoomTypes] = useState([]);
+  const [propertytype, setPropertytype] = useState([]);
 
+  const [noofBedroom, setBedRoom] = useState("");
+  const [noofBed, setnoOfBed] = useState("");
+  const [noofBath, setnoofBath] = useState("");
 
-  // state varibale 
+  //filterbeds
+  function handleroomClick(type, value) {
+    if (type === "bedroom") {
+      setBedRoom(value);
+    } else if (type === "bed") {
+      setnoOfBed(value);
+    } else if (type === "bathroom") {
+      setnoofBath(value);
+    }
+  }
+
+  //Propetytype
+  function handleProperty(data) {
+    setPropertytype(data);
+  }
+
+  //roomtype
+  function handleroomType(value) {
+    const updatedroomtype = roomType.map((obj) => {
+      //change selected to true
+      if (obj.value === value) {
+        obj.selected = !obj.selected;
+      }
+      return obj;
+    });
+    //filter and map only the value is true
+    const filteredroomType = updatedroomtype
+      .filter((obj) => obj.selected)
+      .map((obj) => obj.value);
+
+    setRoomTypes(filteredroomType);
+
   
-
-  function handleroomClick(type,value){
-   console.log(type,value);
-
-   // if 
   }
 
   // total no of stays
@@ -37,7 +67,16 @@ function MainFilter(props) {
   }, [props.Datas]);
 
   function handleStayDetails() {
-    props.handleCallback({ minPrice, maxPrice, roomtypes });
+    setVisible(false);
+    props.handleCallback({
+      minPrice,
+      maxPrice,
+      roomtypes,
+      noofBath,
+      noofBed,
+      noofBedroom,
+      propertytype,
+    });
   }
 
   const footerContent = (
@@ -94,7 +133,6 @@ function MainFilter(props) {
                 placeholder="10"
                 onChange={function (event) {
                   setMinPrice(event.target.value);
-                  console.log(minPrice);
                 }}
               />
             </div>
@@ -111,7 +149,6 @@ function MainFilter(props) {
                 placeholder="750+"
                 onChange={function (event) {
                   setMaxPrice(event.target.value);
-                  console.log(maxPrice);
                 }}
               />
             </div>
@@ -121,23 +158,20 @@ function MainFilter(props) {
         {/* Types of place */}
         <h2 className="filterheading">Type of Places</h2>
         <div className="placesfilter">
-          {roomType.map((obj) => {
+          {roomType.map((obj, index) => {
             return (
-              <div style={{ display: "flex" }}>
+              <div key={index} style={{ display: "flex" }}>
                 <div>
                   <input
                     className="checkboxalign"
                     type="checkbox"
-                    onClick={(event) => {
-                      const ischecked = event.target.checked;
-                      if (ischecked) {
-                        setRoomTypes([...roomType,obj.value]);
-                      }
+                    onClick={() => {
+                      handleroomType(obj.value);
                     }}
                   />
                 </div>
                 <div>
-                  <div classname="filtertitle">
+                  <div className="filtertitle">
                     <h3>{obj.Heading}</h3>
                   </div>
                   <div className="placedesc"> {obj.Desc}</div>
@@ -152,22 +186,24 @@ function MainFilter(props) {
         <div className="Rooms and bed">
           <h2>Rooms and Bed</h2>
           <div className="rooms">
-            <h3>Bedroom</h3> <NoofRooms type="bedroom" handleroomClick={handleroomClick} />
+            <h3>Bedroom</h3>{" "}
+            <NoofRooms type="bedroom" handleroomClick={handleroomClick} />
           </div>
           <div className="rooms">
             <h3>Bed</h3>
-            <NoofRooms type="bed" handleroomClick={handleroomClick}   />
+            <NoofRooms type="bed" handleroomClick={handleroomClick} />
           </div>
           <div className="rooms">
             <h3>Bathroom</h3>
-            <NoofRooms  type="bathroom" handleroomClick={handleroomClick} />
+            <NoofRooms type="bathroom" handleroomClick={handleroomClick} />
           </div>
         </div>
         <hr />
 
         {/* property type */}
         <div>
-          <h2> Property Type</h2> <PropertyType />
+          <h2> Property Type</h2>{" "}
+          <PropertyType handleProperty={handleProperty} />
         </div>
         <hr />
 

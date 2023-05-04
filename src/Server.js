@@ -34,19 +34,19 @@ app.get("/count", async function (req, res) {
   let response;
   try {
     const totalcount = await collection.countDocuments();
-   response={
-    status:"OK",
-    result:totalcount,
-    error:null
-   }
+    response = {
+      status: "OK",
+      result: totalcount,
+      error: null,
+    };
   } catch (err) {
-   response={
-    status:"NOT OK",
-    result:null,
-    error:err
-   }
+    response = {
+      status: "NOT OK",
+      result: null,
+      error: err,
+    };
   }
-  res.send(response)
+  res.send(response);
 });
 
 app.get("/getAllStay", async function (req, res) {
@@ -85,39 +85,35 @@ app.get("/getAllStay", async function (req, res) {
 
 //app.post getstaybyfilter
 app.post("/getStayByFilter", async function (req, res) {
-let response;
-  try{
+  let response;
+  try {
     let resultend = await filterStays(req.body.region);
 
-     response = {
+    response = {
       status: "OK",
       result: resultend,
       error: null,
     };
-   
+
     res.status(200).send(response);
-  }
-  catch(err){
-     response = {
+  } catch (err) {
+    response = {
       status: "NOT OK",
       result: null,
       error: err,
     };
     res.status(400).send(response);
   }
-
-
 });
 
 //app.post  pricefilter
 
 app.post("/pricefilter", async function (req, res) {
   try {
-  
     let filters = await priceFilters(req.body);
     const response = {
       status: "OK",
-      result2: filters.filterPriceloc,
+      result2: filters,
       error: null,
     };
 
@@ -133,7 +129,7 @@ app.post("/pricefilter", async function (req, res) {
 });
 
 async function priceFilters(filters) {
-  console.log(filters);
+ console.log(filters);
   const match = {
     "images.picture_url": { $exists: true },
     "address.street": { $exists: true },
@@ -154,6 +150,17 @@ async function priceFilters(filters) {
   }
   if (filters.roomtype) {
     match["room_type"] = { $in: [...filters.roomtype] };
+  }
+  if(filters.bedroom){
+    match["bedrooms"]=parseInt(filters.bedroom);
+  }
+  if(filters.bed){
+    match["beds"]=parseInt(filters.bed);
+  }
+  if(filters.bathroom){
+    match["bathrooms"]={
+      $gt: parseInt(filters.bathroom),
+    };
   }
 
   try {
@@ -180,6 +187,9 @@ async function priceFilters(filters) {
             stayDistance: 1,
             _id: 0,
             room_type: 1,
+            beds:1, 
+            bathrooms:1,
+            bedrooms:1
           },
         },
         {
@@ -190,14 +200,16 @@ async function priceFilters(filters) {
             price: -1,
             stayDistance: -1,
             room_type: -1,
+            beds:-1, 
+            bathrooms:-1,
+            bedrooms:-1
           },
         },
         { $skip: 0 },
         { $limit: 500 },
       ])
       .toArray();
-    // //count doucmnet need the match components to count the data, if you pass filterpriceloc it will throw error.
-    // const count = await collection.countDocuments(match);
+  
     return filterPriceloc;
   } catch (err) {
     console.log(err);

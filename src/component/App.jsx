@@ -11,23 +11,20 @@ import StayImages from "./StayImages";
 function App() {
   const [Value, setValue] = useState([]);
 
-  const [Datum, setDatum] = useState();
+  const [Datum, setDatum] = useState("");
 
   const [currentFilter, setCurrentFilter] = useState({});
 
-  useEffect(() => {
-    console.log(currentFilter);
-  }, [currentFilter]);
+  useEffect(() => {}, [currentFilter]);
+  useEffect(() => {}, [Datum]);
 
   // API call for whole Database record
   useEffect(() => {
     axios
       .get("http://localhost:8082/getAllStay")
       .then((response) => {
-        console.log("StayImages");
         if (response.data.status === "OK") {
           setValue(response.data.result);
-          // setDatum(response.data.result.length);
         }
       })
       .catch((error) => {
@@ -36,15 +33,18 @@ function App() {
   }, []);
 
   //API call for total count
-  useEffect(()=>{
+  useEffect(() => {
     axios
-    .get("http://localhost:8082/count")
-    .then((response)=>{
-      if(response.data.status==="OK"){
-        setDatum(response.data.result);
-      }
-    })
-  })
+      .get("http://localhost:8082/count")
+      .then((response) => {
+        if (response.data.status === "OK") {
+          setDatum(response.data.result);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // Api call for filtering DB
   async function applyFilter(data) {
@@ -63,9 +63,7 @@ function App() {
 
       if (response.data.status === "OK") {
         setValue(response.data.result);
-        // setDatum(response.data.result.length);
-
-        console.log(Value);
+        setDatum(response.data.result.length);
       }
     } catch (err) {
       console.log(err);
@@ -73,13 +71,17 @@ function App() {
   }
   //PriceFilter
   async function priceFilter(data) {
+    console.log(data);
     try {
-     
       const response = await axios.post("http://localhost:8082/pricefilter", {
         minPrice: data.minPrice,
         maxPrice: data.maxPrice,
         region: currentFilter.selectregion,
         roomtype: data.roomtypes,
+        bedroom: data.noofBath === "Any" ? "" : data.noofBath,
+        bathroom: data.noofBedroom === "Any" ? "" : data.noofBedroom,
+        bed: data.noofBed === "Any" ? "" : data.noofBed,
+        propertytype:data.propertytype
       });
       if (response.data.status === "OK") {
         setValue(response.data.result2);

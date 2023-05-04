@@ -29,9 +29,9 @@ function Accessible() {
     <div>
       <h3>Guest Entrance and Parking</h3>
       <div className="amenty">
-        {guestEntrance.map((obj) => {
+        {guestEntrance.map((obj, index) => {
             return(
-          <div style={{ display: "flex" }}>
+          <div  key={index} style={{ display: "flex" }}>
             <input className="checkboxalign" type="checkbox" />
             <span style={{fontSize:"0.95rem"}}>{obj.value}</span>
           </div>);
