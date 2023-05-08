@@ -21,6 +21,7 @@ function MainFilter(props) {
 
   const [roomtypes, setRoomTypes] = useState([]);
   const [propertytype, setPropertytype] = useState([]);
+  const [ammenty, setAmmenty] = useState([]);
 
   const [noofBedroom, setBedRoom] = useState("");
   const [noofBed, setnoOfBed] = useState("");
@@ -40,6 +41,12 @@ function MainFilter(props) {
   //Propetytype
   function handleProperty(data) {
     setPropertytype(data);
+    console.log(propertytype);
+  }
+
+  //Ammenty
+  function handleAmmentity(data) {
+    setAmmenty(data);
   }
 
   //roomtype
@@ -57,8 +64,6 @@ function MainFilter(props) {
       .map((obj) => obj.value);
 
     setRoomTypes(filteredroomType);
-
-  
   }
 
   // total no of stays
@@ -76,6 +81,7 @@ function MainFilter(props) {
       noofBed,
       noofBedroom,
       propertytype,
+      ammenty
     });
   }
 
@@ -212,7 +218,7 @@ function MainFilter(props) {
           <h2>Ammentities</h2>
 
           <div>
-            <Ammentities />
+            <Ammentities handleAmmentities={handleAmmentity} />
           </div>
         </div>
         <hr />

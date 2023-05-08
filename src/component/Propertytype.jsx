@@ -21,7 +21,7 @@ function PropertyType(props) {
       .map((obj) => obj.value);
 //send the value in array
     setselectedProperty(filtervalue);
-   
+
     props.handleProperty(selectedPropety);
   }
   return (

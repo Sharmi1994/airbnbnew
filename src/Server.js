@@ -73,16 +73,6 @@ app.get("/getAllStay", async function (req, res) {
   res.status(200).send(response);
 });
 
-//post method
-
-// app.get("/", async function (req, res) {
-//   // const { region, Checkin, Checkout, GuestDetail } = req.body;
-
-//   const regionName = req.body.region;
-//   const result = filterStays(regionName);
-//   res.send(result);
-// });
-
 //app.post getstaybyfilter
 app.post("/getStayByFilter", async function (req, res) {
   let response;
@@ -129,7 +119,7 @@ app.post("/pricefilter", async function (req, res) {
 });
 
 async function priceFilters(filters) {
- console.log(filters);
+  
   const match = {
     "images.picture_url": { $exists: true },
     "address.street": { $exists: true },
@@ -151,18 +141,26 @@ async function priceFilters(filters) {
   if (filters.roomtype) {
     match["room_type"] = { $in: [...filters.roomtype] };
   }
-  if(filters.bedroom){
-    match["bedrooms"]=parseInt(filters.bedroom);
+  if (filters.bedroom) {
+    match["bedrooms"] = parseInt(filters.bedroom);
   }
-  if(filters.bed){
-    match["beds"]=parseInt(filters.bed);
+  if (filters.bed) {
+    match["beds"] = parseInt(filters.bed);
   }
-  if(filters.bathroom){
-    match["bathrooms"]={
-      $gt: parseInt(filters.bathroom),
+  if (filters.bathroom) {
+    const bathroom=parseFloat(filters.bathroom).toFixed(1)
+    match["bathrooms"] = {
+      $gte: parseFloat(bathroom)
     };
   }
 
+  if (filters.Propertytype) {
+    match["property_type"] = { $in: [...filters.Propertytype] };
+  }
+  if (filters.ammenty) {
+    match["amenities"] = { $all: [...filters.ammenty] };
+  }
+console.log(match);
   try {
     const filterPriceloc = await collection
       .aggregate([
@@ -187,9 +185,11 @@ async function priceFilters(filters) {
             stayDistance: 1,
             _id: 0,
             room_type: 1,
-            beds:1, 
-            bathrooms:1,
-            bedrooms:1
+            beds: 1,
+            bathrooms: 1,
+            bedrooms: 1,
+            property_type: 1,
+            amenities:1
           },
         },
         {
@@ -200,16 +200,18 @@ async function priceFilters(filters) {
             price: -1,
             stayDistance: -1,
             room_type: -1,
-            beds:-1, 
-            bathrooms:-1,
-            bedrooms:-1
+            beds: -1,
+            bathrooms: -1,
+            bedrooms: -1,
+            property_type: -1,
+            amenities:-1
           },
         },
         { $skip: 0 },
         { $limit: 500 },
       ])
       .toArray();
-  
+
     return filterPriceloc;
   } catch (err) {
     console.log(err);

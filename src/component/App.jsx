@@ -81,7 +81,8 @@ function App() {
         bedroom: data.noofBath === "Any" ? "" : data.noofBath,
         bathroom: data.noofBedroom === "Any" ? "" : data.noofBedroom,
         bed: data.noofBed === "Any" ? "" : data.noofBed,
-        propertytype:data.propertytype
+        Propertytype:data.propertytype ,
+        Ammenty:data.ammenty
       });
       if (response.data.status === "OK") {
         setValue(response.data.result2);
