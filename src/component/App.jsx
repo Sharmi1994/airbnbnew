@@ -4,6 +4,7 @@ import Footer from "./footer";
 import Navbar from "./Navbar";
 import axios from "axios";
 
+
 import FilterCarousel from "./Filternav";
 import MainFilter from "./mainfilter";
 import StayImages from "./StayImages";
@@ -71,7 +72,6 @@ function App() {
   }
   //PriceFilter
   async function priceFilter(data) {
-    console.log(data);
     try {
       const response = await axios.post("http://localhost:8082/pricefilter", {
         minPrice: data.minPrice,
@@ -81,8 +81,8 @@ function App() {
         bedroom: data.noofBath === "Any" ? "" : data.noofBath,
         bathroom: data.noofBedroom === "Any" ? "" : data.noofBedroom,
         bed: data.noofBed === "Any" ? "" : data.noofBed,
-        Propertytype:data.propertytype ,
-        Ammenty:data.ammenty
+        Propertytype: data.propertytype,
+        Ammenty: data.ammenty,
       });
       if (response.data.status === "OK") {
         setValue(response.data.result2);

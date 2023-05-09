@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { Paginator } from "primereact/paginator";
+import { useNavigate } from "react-router-dom";
 
 function StayImages(props) {
   const [value, setValue] = useState([]);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(40);
+  let navigate=useNavigate();
+
+  function routeChange(value){
+navigate("/rooms",{state:{Value:value}})
+  }
 
   useEffect(() => {
     setValue(props.values);
@@ -22,7 +28,7 @@ function StayImages(props) {
       {Array.isArray(value) &&
         value.slice(first, first + rows).map((val, index) => {
           return (
-            <div className="imgdirect" key={index}>
+            <div className="imgdirect" onClick={()=>{routeChange(val.id)}} key={index}>
               <div>
                 <img
                   className="stayimg"

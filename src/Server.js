@@ -3,7 +3,7 @@ require("dotenv").config();
 const app = express();
 const cors = require("cors");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3001",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -119,48 +119,48 @@ app.post("/pricefilter", async function (req, res) {
 });
 
 async function priceFilters(filters) {
-  
   const match = {
     "images.picture_url": { $exists: true },
     "address.street": { $exists: true },
     "review_scores.review_scores_accuracy": { $exists: true },
   };
-  if (filters.region) {
+  if (filters?.region) {
     match["address.country"] = filters.region;
   }
-  if (filters.minPrice) {
+  if (filters?.minPrice) {
     match["price"] = {
       $gt: parseInt(filters.minPrice),
     };
   }
-  if (filters.maxPrice) {
+  if (filters?.maxPrice) {
     match["price"] = {
       $lt: parseInt(filters.maxPrice),
     };
   }
-  if (filters.roomtype) {
+  if (filters?.roomtype && filters?.roomtype?.length > 0) {
     match["room_type"] = { $in: [...filters.roomtype] };
   }
-  if (filters.bedroom) {
+  if (filters?.bedroom) {
     match["bedrooms"] = parseInt(filters.bedroom);
   }
-  if (filters.bed) {
+  if (filters?.bed) {
     match["beds"] = parseInt(filters.bed);
   }
-  if (filters.bathroom) {
-    const bathroom=parseFloat(filters.bathroom).toFixed(1)
+  if (filters?.bathroom) {
+    const bathroom = parseFloat(filters.bathroom).toFixed(1);
     match["bathrooms"] = {
-      $gte: parseFloat(bathroom)
+      $gte: parseFloat(bathroom),
     };
   }
 
-  if (filters.Propertytype) {
+  if (filters?.Propertytype && filters?.Propertytype?.length > 0) {
     match["property_type"] = { $in: [...filters.Propertytype] };
   }
-  if (filters.ammenty) {
-    match["amenities"] = { $all: [...filters.ammenty] };
+  if (filters?.Ammenty && filters?.Ammenty?.length > 0) {
+    match["amenities"] = { $all: [...filters.Ammenty] };
   }
-console.log(match);
+  console.log(match);
+
   try {
     const filterPriceloc = await collection
       .aggregate([
@@ -189,7 +189,7 @@ console.log(match);
             bathrooms: 1,
             bedrooms: 1,
             property_type: 1,
-            amenities:1
+            amenities: 1,
           },
         },
         {
@@ -204,7 +204,7 @@ console.log(match);
             bathrooms: -1,
             bedrooms: -1,
             property_type: -1,
-            amenities:-1
+            amenities: -1,
           },
         },
         { $skip: 0 },

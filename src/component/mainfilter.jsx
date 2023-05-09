@@ -27,6 +27,8 @@ function MainFilter(props) {
   const [noofBed, setnoOfBed] = useState("");
   const [noofBath, setnoofBath] = useState("");
 
+  useEffect(() => {}, [roomtypes]);
+
   //filterbeds
   function handleroomClick(type, value) {
     if (type === "bedroom") {
@@ -41,7 +43,7 @@ function MainFilter(props) {
   //Propetytype
   function handleProperty(data) {
     setPropertytype(data);
-    console.log(propertytype);
+    // console.log(propertytype);
   }
 
   //Ammenty
@@ -81,7 +83,7 @@ function MainFilter(props) {
       noofBed,
       noofBedroom,
       propertytype,
-      ammenty
+      ammenty,
     });
   }
 
@@ -93,7 +95,9 @@ function MainFilter(props) {
       <div>
         <button
           type="submit"
-          onClick={handleStayDetails}
+          onClick={() => {
+            handleStayDetails();
+          }}
           label="show no of days"
           className="btn-lg btn-dark"
         >

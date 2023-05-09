@@ -27,7 +27,7 @@ const amment = [
     {
         id:5,
       Heading:"Essentials",
-      value: "Airconditioning",
+      value: "Air conditioning",
       select:false
     },
     {
@@ -39,7 +39,7 @@ const amment = [
     {
         id:7,
       Heading:"Essentials",
-      value: "Dedicated Workspace",
+      value: "Laptop friendly workspace",
       select:false
     },
     {
@@ -51,7 +51,7 @@ const amment = [
     {
         id:9,
       Heading:"Essentials",
-      value: "Hari Dryer",
+      value: "Hair dryer",
       select:false
     },
     {
@@ -99,7 +99,7 @@ const amment = [
     {
         id:17,
       Heading:"Features",
-      value: "BBQ Grill",
+      value: "BBQ grill",
       select:false
     },
     {
@@ -111,37 +111,37 @@ const amment = [
     {
         id:19,
       Heading:"Features",
-      value: "Indoor Fireplace",
+      value: "Indoor fireplace",
       select:false
     },
     {
         id:20,
       Heading:"Features",
-      value: "Smoking Allowed",
+      value: "Smoking allowed",
       select:false
     },
     {
         id:21,
       Heading:"Location",
-      value: "BeachFront",
+      value: "Beachfront",
       select:false
     },
     {
         id:22,
       Heading:"Location",
-      value: "WaterFront",
+      value: "Waterfront",
       select:false
     },
     {
         id:23,
       Heading:"Safety",
-      value: "Smokealarm",
+      value: "Smoke detector",
       select:false
     },
     {
         id:24,
       Heading:"Safety",
-      value: "Carbon Monoxide Alarm",
+      value: "Carbon monoxide detector",
       select:false
     }
 

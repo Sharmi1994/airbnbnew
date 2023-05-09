@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Property from "../property";
 
 function PropertyType(props) {
-  const [propertytype, setPropertytype] = useState([]);
   const [selectedPropety, setselectedProperty] = useState([]);
 
   function handlepropertyClick(value) {
@@ -13,16 +12,13 @@ function PropertyType(props) {
 
       return obj;
     });
-    //this contain array with value and isselected true and false
-    setPropertytype(updatedProperty);
-    // filter function filter the array with isselected ture and map function map the value alone
+
     const filtervalue = updatedProperty
       .filter((obj) => obj.isselected)
       .map((obj) => obj.value);
-//send the value in array
+    //send the value in array
     setselectedProperty(filtervalue);
-
-    props.handleProperty(selectedPropety);
+    props.handleProperty(filtervalue);
   }
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>

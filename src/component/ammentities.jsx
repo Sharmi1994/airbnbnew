@@ -27,7 +27,7 @@ function Ammentities(props) {
       .map((obj) => obj.value);
     setselectedAmmenty(finalAmmenty);
 
-    props.handleAmmentities(selectedAmmenty);
+    props.handleAmmentities(finalAmmenty);
   }
 
   //reducemethod is used to split the array value based on the Heading
