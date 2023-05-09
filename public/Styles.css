@@ -412,10 +412,6 @@ justify-content: space-around;
   /* #pr_id_2_content.p-dialog-content {
     display: flex;
 } */
-body{        
-    margin-top: 100px;
-  margin-bottom: 60px;
-}
 
 @media only screen and (max-width: 1200px) and (min-width: 800px) {
     .mainimgdirect{
@@ -455,5 +451,13 @@ body{
 }
 .btn-lg{
     height: 50px;
+    border-radius: 20px;
+}
+.searchbutton{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-top: 30px;
+    background-color: white;
     border-radius: 20px;
 }

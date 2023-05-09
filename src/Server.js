@@ -306,7 +306,7 @@ async function findimg(pageNo) {
             "review_scores.review_scores_accuracy": 1,
             price: 1,
             stayDistance: 1,
-            _id: 0,
+            _id: 1,
           },
         },
         {
@@ -316,6 +316,7 @@ async function findimg(pageNo) {
             "review_scores.review_scores_accuracy": -1,
             price: -1,
             stayDistance: 1,
+            _id:-1
           },
         },
         { $skip: 20 }, //
@@ -324,6 +325,7 @@ async function findimg(pageNo) {
       .toArray();
 
     return styimg;
+    
   } catch (Err) {
     return Err;
   }

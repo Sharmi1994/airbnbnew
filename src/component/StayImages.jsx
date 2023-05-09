@@ -7,15 +7,15 @@ function StayImages(props) {
   const [value, setValue] = useState([]);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(40);
-  let navigate=useNavigate();
+  let navigate = useNavigate();
 
-  function routeChange(value){
-navigate("/rooms",{state:{Value:value}})
+  function routeChange(id) {
+
+    navigate(`/rooms/${id}`);
   }
 
   useEffect(() => {
     setValue(props.values);
-    console.log(props.values);
   }, [props.values]);
 
   const onPageChange = (event) => {
@@ -28,7 +28,13 @@ navigate("/rooms",{state:{Value:value}})
       {Array.isArray(value) &&
         value.slice(first, first + rows).map((val, index) => {
           return (
-            <div className="imgdirect" onClick={()=>{routeChange(val.id)}} key={index}>
+            <div
+              className="imgdirect"
+              onClick={() => {
+                routeChange(val._id);
+              }}
+              key={index}
+            >
               <div>
                 <img
                   className="stayimg"

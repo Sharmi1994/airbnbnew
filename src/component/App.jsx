@@ -94,7 +94,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div style={{marginTop:"90px"}}>
       <Navbar handleCallback={applyFilter} />
       <hr />
 
