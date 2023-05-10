@@ -93,6 +93,10 @@ function App() {
     }
   }
 
+  async function IdFilter(id){
+console.log(id)
+  }
+
   return (
     <div style={{marginTop:"90px"}}>
       <Navbar handleCallback={applyFilter} />
@@ -108,7 +112,7 @@ function App() {
       </div>
       <hr />
 
-      <StayImages values={Value} />
+      <StayImages values={Value}  handleIdcallback={IdFilter}/>
       <Footer />
     </div>
   );

@@ -296,6 +296,7 @@ async function findimg(pageNo) {
             "address.street": { $exists: true },
             "review_scores.review_scores_accuracy": { $exists: true },
             price: { $exists: true },
+            name: { $exists: true },
           },
         },
 
@@ -307,6 +308,7 @@ async function findimg(pageNo) {
             price: 1,
             stayDistance: 1,
             _id: 1,
+            name:1
           },
         },
         {
@@ -316,7 +318,8 @@ async function findimg(pageNo) {
             "review_scores.review_scores_accuracy": -1,
             price: -1,
             stayDistance: 1,
-            _id:-1
+            _id: -1,
+            name:-1
           },
         },
         { $skip: 20 }, //
@@ -325,7 +328,6 @@ async function findimg(pageNo) {
       .toArray();
 
     return styimg;
-    
   } catch (Err) {
     return Err;
   }

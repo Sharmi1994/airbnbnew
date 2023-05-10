@@ -9,9 +9,20 @@ function StayImages(props) {
   const [rows, setRows] = useState(40);
   let navigate = useNavigate();
 
-  function routeChange(id) {
 
-    navigate(`/rooms/${id}`);
+  const [newid,setId]=useState("");
+  function routeChange(id, address, name, imgsrc, distance, price) {
+    setId (id);
+    props.handleIdcallback(newid)
+    navigate(`/rooms/${id}`, {
+      state: {
+        Address: address,
+        Name: name,
+        Imgsrc: imgsrc,
+        Distance: distance,
+        Price: price,
+      },
+    });
   }
 
   useEffect(() => {
@@ -31,7 +42,14 @@ function StayImages(props) {
             <div
               className="imgdirect"
               onClick={() => {
-                routeChange(val._id);
+                routeChange(
+                  val._id,
+                  val.address.street,
+                  val.name,
+                  val.images.picture_url,
+                  val.stayDistance,
+                  val.price
+                );
               }}
               key={index}
             >
