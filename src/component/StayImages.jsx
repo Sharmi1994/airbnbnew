@@ -7,26 +7,18 @@ function StayImages(props) {
   const [value, setValue] = useState([]);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(40);
+
   let navigate = useNavigate();
 
+  function routeChange(id) {
 
-  const [newid,setId]=useState("");
-  function routeChange(id, address, name, imgsrc, distance, price) {
-    setId (id);
-    props.handleIdcallback(newid)
-    navigate(`/rooms/${id}`, {
-      state: {
-        Address: address,
-        Name: name,
-        Imgsrc: imgsrc,
-        Distance: distance,
-        Price: price,
-      },
-    });
+    navigate(`/rooms/${id}`);
   }
+
 
   useEffect(() => {
     setValue(props.values);
+    
   }, [props.values]);
 
   const onPageChange = (event) => {
@@ -42,14 +34,7 @@ function StayImages(props) {
             <div
               className="imgdirect"
               onClick={() => {
-                routeChange(
-                  val._id,
-                  val.address.street,
-                  val.name,
-                  val.images.picture_url,
-                  val.stayDistance,
-                  val.price
-                );
+                routeChange(val._id);
               }}
               key={index}
             >
@@ -76,6 +61,7 @@ function StayImages(props) {
                 {val.price.$numberDecimal}
                 <span>USD</span>
               </div>
+              <div style={{ fontSize: "0.75rem" }}>{val._id}</div>
             </div>
           );
         })}

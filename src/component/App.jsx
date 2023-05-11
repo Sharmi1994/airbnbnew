@@ -4,7 +4,6 @@ import Footer from "./footer";
 import Navbar from "./Navbar";
 import axios from "axios";
 
-
 import FilterCarousel from "./Filternav";
 import MainFilter from "./mainfilter";
 import StayImages from "./StayImages";
@@ -14,10 +13,13 @@ function App() {
 
   const [Datum, setDatum] = useState("");
 
+  const [newValue, setnewValue] = useState("");
+
   const [currentFilter, setCurrentFilter] = useState({});
 
   useEffect(() => {}, [currentFilter]);
   useEffect(() => {}, [Datum]);
+  useEffect(() => {}, [newValue]);
 
   // API call for whole Database record
   useEffect(() => {
@@ -93,12 +95,8 @@ function App() {
     }
   }
 
-  async function IdFilter(id){
-console.log(id)
-  }
-
   return (
-    <div style={{marginTop:"90px"}}>
+    <div style={{ marginTop: "90px" }}>
       <Navbar handleCallback={applyFilter} />
       <hr />
 
@@ -112,7 +110,7 @@ console.log(id)
       </div>
       <hr />
 
-      <StayImages values={Value}  handleIdcallback={IdFilter}/>
+      <StayImages values={Value} />
       <Footer />
     </div>
   );

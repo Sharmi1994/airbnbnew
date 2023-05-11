@@ -1,4 +1,5 @@
 const express = require("express");
+const ObjectID = require("mongodb").ObjectId;
 require("dotenv").config();
 const app = express();
 const cors = require("cors");
@@ -95,6 +96,42 @@ app.post("/getStayByFilter", async function (req, res) {
     res.status(400).send(response);
   }
 });
+
+//get stay by id
+
+app.get("/rooms/:id", async function (req, res) {
+ 
+  let response;
+  try {
+    console.log(req.params.id)
+    let resultend = await getstaybyID(req.params.id);
+    response = {
+      status: "OK",
+      result3: resultend,
+      error: null,
+    };
+   console.log(response)
+    res.status(200).send(response);
+  } catch (err) {
+    response = {
+      status: "NOT OK",
+      result3: null,
+      error: err,
+    };
+    res.status(404).send(response);
+  }
+});
+
+async function getstaybyID(id) {
+  try {
+  
+    const filteringbyId = await collection.find({ _id: id }).toArray();
+    
+    return filteringbyId;
+  } catch (err) {
+    return err;
+  }
+}
 
 //app.post  pricefilter
 
@@ -308,7 +345,7 @@ async function findimg(pageNo) {
             price: 1,
             stayDistance: 1,
             _id: 1,
-            name:1
+            name: 1,
           },
         },
         {
@@ -319,7 +356,7 @@ async function findimg(pageNo) {
             price: -1,
             stayDistance: 1,
             _id: -1,
-            name:-1
+            name: -1,
           },
         },
         { $skip: 20 }, //

@@ -16,7 +16,6 @@ const routers = createBrowserRouter(
     <Route element={<Layout />}>
       <Route path="/" element={<App />} />
       <Route path="/rooms/:id" element={<Rooms />} />
-    
     </Route>
   )
 );

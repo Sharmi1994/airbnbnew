@@ -1,17 +1,30 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
 import Login from "./login";
 import { FaSearch } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function Rooms() {
   const { id } = useParams();
-  const location = useLocation();
-  const address = location.state?.Address;
-  const name=location.state?.Name;
-  const imgsrc=location.state?.Imgsrc;
-  const distance=location.state?.Distance;
-  const price=location.state?.Price
+
+  const [newValue, setnewValue] = useState([]);
+  console.log(newValue);
+
+  useEffect(() => {
+    IdFilter(id);
+  }, [id]);
+
+  async function IdFilter(id) {
+    try {
+      const response = await axios.get("http://localhost:8082/rooms/" + id);
+      if (response.data.status === "OK") {
+        setnewValue(response.data.result3);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -25,9 +38,13 @@ function Rooms() {
         </div>
         <div>
           {" "}
-          <button className="searchbutton">
+          <button 
+          className="searchbutton"
+          >
             <div>Start Your Search</div>{" "}
-            <div className="search-icon">
+            <div 
+            className="search-icon"
+            >
               <FaSearch />
             </div>
           </button>
@@ -37,20 +54,24 @@ function Rooms() {
           <Login />
         </div>
       </nav>
-
-      <div>
-        {name}
-        <div>
-          <img
-            className="stayimg"
-            src={imgsrc}
-            alt=""
-          />
-          <div>{address}</div>
-          <div>{Math.ceil(distance/1000)}<span>KM</span></div>
-          <div>{price.$numberDecimal}<span>USD</span></div>
-        </div>
-      </div>
+      {Array.isArray(newValue) &&
+        newValue.map((obj, index) => {
+          return (
+            <div key={index}>
+              {obj.name}
+              <div>
+                <img className="stayimg" src={obj.images.picture_url} alt="" />
+                <div>address</div>
+                <div>
+                  KM<span>KM</span>
+                </div>
+                <div>
+                  Price<span>USD</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
     </React.Fragment>
   );
 }
